@@ -1,11 +1,9 @@
 ﻿using CefSharp;
-using CefSharp.Internals;
 using CefSharp.WinForms;
 using System;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -19,7 +17,7 @@ namespace Messanger
         private readonly bool[] flags =
         {
             false, // UserName entered
-            true, // Network enabled
+            false, // Network enabled
         };
         private string username = "Новый пользователь";
 
@@ -38,6 +36,10 @@ namespace Messanger
         {
             if (Input.Text.Equals(InputPlaceholder) || Input.Text.Equals(string.Empty))
             {
+                if (choiseFile.ShowDialog() == DialogResult.OK)
+                {
+                    SendFile(choiseFile.FileName);
+                }
                 return;
             }
 
@@ -146,7 +148,8 @@ namespace Messanger
                 form.BeginInvoke((MethodInvoker)(() => form.Text = e2.Address));
             };
 
-            form.FormClosing += (object sender2, FormClosingEventArgs e2) => {
+            form.FormClosing += (object sender2, FormClosingEventArgs e2) =>
+            {
                 web.BeginInvoke((MethodInvoker)(() => web.Dispose()));
             };
 
@@ -155,7 +158,7 @@ namespace Messanger
         }
         #endregion
 
-        #region inet
+        #region Internet
         private TcpClient tcpClient = new TcpClient();
         private NetworkStream stream;
 
@@ -250,5 +253,45 @@ namespace Messanger
         }
         #endregion
 
+        #region File transfer
+        private void SendFile(string filename)
+        {
+            byte[] data = new byte[1024 * 7];
+            int lenght = 0;
+            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            {
+                lenght = fs.Read(data, 0, data.Length);
+            }
+
+            Form form = new Form();
+
+            Button ok = new Button
+            {
+                Text = "Отправить",
+                Dock = DockStyle.Left,
+                DialogResult = DialogResult.OK
+            };
+            Button cancel = new Button
+            {
+                Text = "Отмена",
+                Dock = DockStyle.Right,
+                DialogResult = DialogResult.Cancel
+            };
+            string str = Encoding.UTF8.GetString(data, 0, lenght);
+            Label label = new Label
+            {
+                Text = str,
+                Dock = DockStyle.Fill
+            };
+
+            form.Controls.Add(label);
+            form.Controls.Add(ok);
+            form.Controls.Add(cancel);
+
+            if (form.ShowDialog() != DialogResult.OK) return;
+
+            Display("Отправлено...", Color.Bisque);
+        }
+        #endregion
     }
 }

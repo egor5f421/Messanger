@@ -37,6 +37,7 @@ namespace Messanger
             this.SendButton = new System.Windows.Forms.Button();
             this.Input = new System.Windows.Forms.RichTextBox();
             this.Messages = new System.Windows.Forms.RichTextBox();
+            this.choiseFile = new System.Windows.Forms.OpenFileDialog();
             TickTimer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -86,6 +87,11 @@ namespace Messanger
             this.Messages.Text = "Ваше имя пользователя:\n";
             this.Messages.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.OnClickLink);
             // 
+            // choiseFile
+            // 
+            this.choiseFile.FileName = "openFileDialog1";
+            this.choiseFile.Filter = "Текст|*.txt|Все|*.*";
+            // 
             // Messanger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -110,6 +116,7 @@ namespace Messanger
         protected System.Windows.Forms.Button SendButton;
         protected System.Windows.Forms.RichTextBox Input;
         private System.Windows.Forms.RichTextBox Messages;
+        private OpenFileDialog choiseFile;
     }
 }
 
