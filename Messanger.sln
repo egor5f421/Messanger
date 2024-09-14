@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35208.52
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messanger", "Messanger.csproj", "{BA1357F3-9C40-487D-BBB4-644E4C912307}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server for messanger", "..\Server for messanger\Server for messanger.csproj", "{6D81F441-67DD-4585-89C2-0271F1C7B73B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA1357F3-9C40-487D-BBB4-644E4C912307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA1357F3-9C40-487D-BBB4-644E4C912307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA1357F3-9C40-487D-BBB4-644E4C912307}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA1357F3-9C40-487D-BBB4-644E4C912307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D81F441-67DD-4585-89C2-0271F1C7B73B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D81F441-67DD-4585-89C2-0271F1C7B73B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D81F441-67DD-4585-89C2-0271F1C7B73B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D81F441-67DD-4585-89C2-0271F1C7B73B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {270AD4EC-C7A2-4C15-A579-E5AE735166CD}
+	EndGlobalSection
+EndGlobal
