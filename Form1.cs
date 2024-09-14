@@ -51,101 +51,6 @@ namespace Messanger
             SendNet(temp);
         }
 
-        #region inet
-        private TcpClient tcpClient = new TcpClient();
-        private NetworkStream stream;
-
-        private void SendNet(string data)
-        {
-            if (!flags[0]) return;
-            byte[] buffer = Encoding.UTF8.GetBytes(data);
-            stream.Write(buffer, 0, buffer.Length);
-        }
-
-        private void Recive(object sender, EventArgs e)
-        {
-            if (!flags[1]) return;
-            if (stream == null) return;
-            if (!stream.DataAvailable) return;
-            byte[] bytes = new byte[1024];
-            int lenght = stream.Read(bytes, 0, bytes.Length);
-            string data = Encoding.UTF8.GetString(bytes, 0, lenght).Trim('\n');
-            if (data.Split(';')[0].Equals("list"))
-            {
-                string[] users = data.Replace("list;", "Список пользователей:").Split(';');
-                foreach (var user in users)
-                {
-                    Display(user.Trim('\n', ' ') + "\n", Color.BlueViolet);
-                }
-            }
-            else
-            {
-                string temp = data.Substring(0, data.IndexOf(": ")).Trim('\n');
-                if (username.Equals(temp)) return;
-                Display(data, Color.Red);
-            }
-        }
-
-        private void StopConnections(object sender, FormClosingEventArgs e)
-        {
-            if (stream != null)
-            {
-                stream.Close();
-                stream.Dispose();
-                stream = null;
-            }
-            if (tcpClient != null)
-            {
-                tcpClient.Close();
-                tcpClient.Dispose();
-                tcpClient = null;
-            }
-        }
-
-        private void StartNet()
-        {
-            try
-            {
-                string ip = string.Empty;
-                Form form = new Form();
-                TextBox tb = new TextBox
-                {
-                    Dock = DockStyle.Fill
-                };
-                tb.TextChanged += (object sender2, EventArgs e2) =>
-                {
-                    ip = tb.Text;
-                };
-                form.Controls.Add(tb);
-                Button btn = new Button
-                {
-                    Dock = DockStyle.Bottom,
-                    Text = "ok"
-                };
-                btn.Click += (object sender2, EventArgs e2) =>
-                {
-                    if (tb.Text == "") ip = "127.0.0.1";
-                    form.Close();
-                };
-                form.Controls.Add(btn);
-                form.ShowDialog();
-                IPAddress ip2 = new IPAddress(new byte[] { 127, 0, 0, 1 });
-                if (!IPAddress.TryParse(ip, out ip2))
-                {
-                    Console.WriteLine(ip);
-                }
-                Console.WriteLine(ip); // 192.168.42.72 надо НЕ УДАЛЯТЬ!!!! 188.162.203.98
-                tcpClient.Connect(ip2, 7305);
-                stream = tcpClient.GetStream();
-            }
-            catch (SocketException ex)
-            {
-                Console.WriteLine($"Error: {ex}");
-                Dispose(true);
-            }
-        }
-        #endregion
-
         private void Start(object sender, EventArgs e)
         {
             Input.Text = InputPlaceholder;
@@ -247,6 +152,101 @@ namespace Messanger
 
             form.Controls.Add(web);
             form.ShowDialog();
+        }
+        #endregion
+
+        #region inet
+        private TcpClient tcpClient = new TcpClient();
+        private NetworkStream stream;
+
+        private void SendNet(string data)
+        {
+            if (!flags[0]) return;
+            byte[] buffer = Encoding.UTF8.GetBytes(data);
+            stream.Write(buffer, 0, buffer.Length);
+        }
+
+        private void Recive(object sender, EventArgs e)
+        {
+            if (!flags[1]) return;
+            if (stream == null) return;
+            if (!stream.DataAvailable) return;
+            byte[] bytes = new byte[1024];
+            int lenght = stream.Read(bytes, 0, bytes.Length);
+            string data = Encoding.UTF8.GetString(bytes, 0, lenght).Trim('\n');
+            if (data.Split(';')[0].Equals("list"))
+            {
+                string[] users = data.Replace("list;", "Список пользователей:").Split(';');
+                foreach (var user in users)
+                {
+                    Display(user.Trim('\n', ' ') + "\n", Color.BlueViolet);
+                }
+            }
+            else
+            {
+                string temp = data.Substring(0, data.IndexOf(": ")).Trim('\n');
+                if (username.Equals(temp)) return;
+                Display(data, Color.Red);
+            }
+        }
+
+        private void StopConnections(object sender, FormClosingEventArgs e)
+        {
+            if (stream != null)
+            {
+                stream.Close();
+                stream.Dispose();
+                stream = null;
+            }
+            if (tcpClient != null)
+            {
+                tcpClient.Close();
+                tcpClient.Dispose();
+                tcpClient = null;
+            }
+        }
+
+        private void StartNet()
+        {
+            try
+            {
+                string ip = string.Empty;
+                Form form = new Form();
+                TextBox tb = new TextBox
+                {
+                    Dock = DockStyle.Fill
+                };
+                tb.TextChanged += (object sender2, EventArgs e2) =>
+                {
+                    ip = tb.Text;
+                };
+                form.Controls.Add(tb);
+                Button btn = new Button
+                {
+                    Dock = DockStyle.Bottom,
+                    Text = "ok"
+                };
+                btn.Click += (object sender2, EventArgs e2) =>
+                {
+                    if (tb.Text == "") ip = "127.0.0.1";
+                    form.Close();
+                };
+                form.Controls.Add(btn);
+                form.ShowDialog();
+                IPAddress ip2 = new IPAddress(new byte[] { 127, 0, 0, 1 });
+                if (!IPAddress.TryParse(ip, out ip2))
+                {
+                    Console.WriteLine(ip);
+                }
+                Console.WriteLine(ip); // 192.168.42.72 надо НЕ УДАЛЯТЬ!!!! 188.162.203.98
+                tcpClient.Connect(ip2, 7305);
+                stream = tcpClient.GetStream();
+            }
+            catch (SocketException ex)
+            {
+                Console.WriteLine($"Error: {ex}");
+                Dispose(true);
+            }
         }
         #endregion
 
