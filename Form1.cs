@@ -17,7 +17,7 @@ namespace Messanger
         private readonly bool[] flags =
         {
             false, // UserName entered
-            false, // Network enabled
+            true, // Network enabled
         };
         private string username = "Новый пользователь";
 
