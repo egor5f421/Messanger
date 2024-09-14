@@ -9,9 +9,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Messanger
+namespace Messenger
 {
-    public partial class Messanger : Form
+    public partial class Messenger : Form
     {
         //flags
         private readonly bool[] flags =
@@ -22,7 +22,7 @@ namespace Messanger
         private string username = "Новый пользователь";
 
 
-        public Messanger()
+        public Messenger()
         {
             InitializeComponent();
         }
@@ -169,14 +169,14 @@ namespace Messanger
             stream.Write(buffer, 0, buffer.Length);
         }
 
-        private void Recive(object sender, EventArgs e)
+        private void Receive(object sender, EventArgs e)
         {
             if (!flags[1]) return;
             if (stream == null) return;
             if (!stream.DataAvailable) return;
             byte[] bytes = new byte[1024];
-            int lenght = stream.Read(bytes, 0, bytes.Length);
-            string data = Encoding.UTF8.GetString(bytes, 0, lenght).Trim('\n');
+            int length = stream.Read(bytes, 0, bytes.Length);
+            string data = Encoding.UTF8.GetString(bytes, 0, length).Trim('\n');
             if (data.Split(';')[0].Equals("list"))
             {
                 string[] users = data.Replace("list;", "Список пользователей:").Split(';');
@@ -257,10 +257,10 @@ namespace Messanger
         private void SendFile(string filename)
         {
             byte[] data = new byte[1024 * 7];
-            int lenght = 0;
+            int length = 0;
             using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
-                lenght = fs.Read(data, 0, data.Length);
+                length = fs.Read(data, 0, data.Length);
             }
 
             Form form = new Form();
@@ -277,7 +277,7 @@ namespace Messanger
                 Dock = DockStyle.Right,
                 DialogResult = DialogResult.Cancel
             };
-            string stringData = Encoding.UTF8.GetString(data, 0, lenght);
+            string stringData = Encoding.UTF8.GetString(data, 0, length);
             Label label = new Label
             {
                 Text = stringData,

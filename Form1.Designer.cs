@@ -2,9 +2,9 @@
 using System.Windows.Forms;
 using System;
 
-namespace Messanger
+namespace Messenger
 {
-    partial class Messanger
+    partial class Messenger
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -44,7 +44,7 @@ namespace Messanger
             // TickTimer
             // 
             TickTimer.Enabled = true;
-            TickTimer.Tick += new System.EventHandler(this.Recive);
+            TickTimer.Tick += new System.EventHandler(this.Receive);
             // 
             // SendButton
             // 

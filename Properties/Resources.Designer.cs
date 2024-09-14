@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Messanger.Properties {
+namespace Messenger.Properties {
     using System;
     
     

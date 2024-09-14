@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using System.Windows.Forms;
 
-namespace Messanger
+namespace Messenger
 {
     public static class RichTextBoxExtensions
     {

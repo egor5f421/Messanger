@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Messanger
+namespace Messenger
 {
     internal static class Program
     {
@@ -16,7 +16,7 @@ namespace Messanger
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Messanger());
+            Application.Run(new Messenger());
         }
     }
 }
