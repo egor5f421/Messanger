@@ -241,7 +241,7 @@ namespace Messanger
                 {
                     Console.WriteLine(ip);
                 }
-                Console.WriteLine(ip); // 192.168.42.72 надо НЕ УДАЛЯТЬ!!!! 188.162.203.98
+                Console.WriteLine(ip);
                 tcpClient.Connect(ip2, 7305);
                 stream = tcpClient.GetStream();
             }
@@ -277,10 +277,10 @@ namespace Messanger
                 Dock = DockStyle.Right,
                 DialogResult = DialogResult.Cancel
             };
-            string str = Encoding.UTF8.GetString(data, 0, lenght);
+            string stringData = Encoding.UTF8.GetString(data, 0, lenght);
             Label label = new Label
             {
-                Text = str,
+                Text = stringData,
                 Dock = DockStyle.Fill
             };
 
@@ -289,6 +289,10 @@ namespace Messanger
             form.Controls.Add(cancel);
 
             if (form.ShowDialog() != DialogResult.OK) return;
+
+            string dataForSend = "file;" + stringData;
+            byte[] bytesDataForSend = Encoding.UTF8.GetBytes(dataForSend);
+            stream.Write(bytesDataForSend, 0, bytesDataForSend.Length);
 
             Display("Отправлено...", Color.Bisque);
         }
