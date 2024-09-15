@@ -108,11 +108,12 @@ namespace Messenger
         {
             if (!flags[0] && e.KeyCode == Keys.Return)
             {
-                flags[0] = true;
                 TextInfo info = new CultureInfo("ru-ru").TextInfo;
-                username = info.ToTitleCase(Input.Text.Trim('\n'));
-                Text = username;
+                string temp = Input.Text.Trim('\n');
                 Send(SendButton, EventArgs.Empty);
+                username = info.ToTitleCase(temp);
+                Text = username;
+                flags[0] = true;
 
                 if (flags[1])
                 {
@@ -176,20 +177,60 @@ namespace Messenger
             if (!stream.DataAvailable) return;
             byte[] bytes = new byte[1024];
             int length = stream.Read(bytes, 0, bytes.Length);
-            string data = Encoding.UTF8.GetString(bytes, 0, length).Trim('\n');
-            if (data.Split(';')[0].Equals("list"))
+            string[] data = Encoding.UTF8.GetString(bytes, 0, length).Trim('\n').Split(';');
+            if (data[0].Equals("list"))
             {
-                string[] users = data.Replace("list;", "Список пользователей:").Split(';');
+                string[] users = data[1].Trim(' ', '\n').Replace("list;", "Список пользователей:").Split(';');
                 foreach (var user in users)
                 {
-                    Display(user.Trim('\n', ' ') + "\n", Color.BlueViolet);
+                    Display(user.Trim('\n', ' ') + "\n", Color.Black);
                 }
+            }
+            else if (data[0].Equals("file"))
+            {
+                string fileData = data[1];
+                Form form = new Form();
+
+                form.Controls.Add(new Label
+                {
+                    Text = fileData,
+                    Dock = DockStyle.Fill,
+                });
+
+                SaveFileDialog dialog = new SaveFileDialog()
+                {
+                    Filter = "All|*.*"
+                };
+
+                Button btn = new Button()
+                {
+                    Text = "Скачать файл",
+                    Dock = DockStyle.Bottom,
+                };
+                btn.Click += (object sender2, EventArgs e2) =>
+                {
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string filename = dialog.FileName;
+                        using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
+                        {
+                            byte[] dataToWrite = Encoding.UTF8.GetBytes(fileData);
+                            fs.Write(dataToWrite, 0, dataToWrite.Length);
+                            fs.Flush();
+                        }
+                        form.Close();
+                    }
+                };
+
+                form.Controls.Add(btn);
+
+                form.ShowDialog();
             }
             else
             {
-                string temp = data.Substring(0, data.IndexOf(": ")).Trim('\n');
+                string temp = data[0].Substring(0, data[0].IndexOf(": ")).Trim('\n');
                 if (username.Equals(temp)) return;
-                Display(data, Color.Red);
+                Display(data[0], Color.Red);
             }
         }
 
@@ -240,6 +281,7 @@ namespace Messenger
                 if (!IPAddress.TryParse(ip, out ip2))
                 {
                     Console.WriteLine(ip);
+                    Dispose(true);
                 }
                 Console.WriteLine(ip);
                 tcpClient.Connect(ip2, 7305);
@@ -291,10 +333,10 @@ namespace Messenger
             if (form.ShowDialog() != DialogResult.OK) return;
 
             string dataForSend = "file;" + stringData;
-            byte[] bytesDataForSend = Encoding.UTF8.GetBytes(dataForSend);
+            byte[] bytesDataForSend = Encoding.UTF8.GetBytes(dataForSend.Trim(' ', '\n'));
             stream.Write(bytesDataForSend, 0, bytesDataForSend.Length);
 
-            Display("Отправлено...", Color.Bisque);
+            Display("Отправлено...", Color.Black);
         }
         #endregion
     }
